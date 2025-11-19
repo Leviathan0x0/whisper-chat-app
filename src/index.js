@@ -18,7 +18,7 @@ app.use(express.static(publicDirectoryPath, { index: false }));
 let count = 1;
 
 io.on('connection', (socket) => {
-  l('Connection');
+  console.log('New WebSocket connection');
 
   socket.on('join', (options, callback) => {
     const { error, user } = addUser({ id: socket.id, ...options });
@@ -87,5 +87,5 @@ app.get('/join', (req, res) => {
 });
 
 server.listen(port, () => {
-  l.s(`Server up on port ${port}`);
+  console.log(`Server is up on port ${port}`);
 });

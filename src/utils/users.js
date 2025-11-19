@@ -1,5 +1,3 @@
-const l = require('../../../log');
-
 const users = [];
 
 const addUser = ({ id, username, room }) => {
