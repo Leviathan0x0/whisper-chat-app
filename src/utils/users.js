@@ -1,6 +1,6 @@
 const users = [];
 
-const addUser = ({ id, username, room }) => {
+const addUser = ({ id, username, room }, isStale) => {
   //Clean the data
   username = username.trim().toLowerCase();
   const formattedUsername = username.charAt(0).toUpperCase() + username.slice(1);
@@ -20,9 +20,15 @@ const addUser = ({ id, username, room }) => {
 
   // Validate username
   if (existingUser) {
-    return {
-      error: 'Username is in use!',
-    };
+    // Allow a reconnecting/refreshing user to reclaim their name when the
+    // previous session is no longer connected, rather than falsely rejecting it.
+    if (typeof isStale === 'function' && isStale(existingUser.id)) {
+      removeUser(existingUser.id);
+    } else {
+      return {
+        error: 'Username is in use!',
+      };
+    }
   }
 
   // Store user
