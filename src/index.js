@@ -19,7 +19,7 @@ io.on('connection', (socket) => {
   console.log('New WebSocket connection');
 
   socket.on('join', (options, callback) => {
-    const { error, user } = addUser({ id: socket.id, ...options });
+    const { error, user } = addUser({ id: socket.id, ...options }, (existingId) => !io.sockets.sockets.has(existingId));
 
     if (error) {
       return callback(error);
